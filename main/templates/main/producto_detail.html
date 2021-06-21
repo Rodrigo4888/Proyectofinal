@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+    integrity="undefined"
+    crossorigin="anonymous"
+  />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+    integrity="undefined"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://kit.fontawesome.com/4df7245c80.js"
+    crossorigin="anonymous"
+  ></script>
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css" />
+  <head>
+    <meta charset="utf-8" />
+    <title>LinioExp</title>
+  </head>
+  <body>
+    <style type="text/css">
+      body {
+        margin: 20px;
+      }
+      a {
+        text-decoration: none !important;
+        color: #2874a6;
+        font-size: 20px;
+      }
+    </style>
+    <h1>Linio Exp</h1>
+    <hr />
+    <h3>{{ object.nombre }}</h3>
+    <ul>
+      <li><strong>Precio:</strong> {{ object.precio }}</li>
+      <li><strong>Descripcion:</strong> {{ object.descripcion }}</li>
+      <li><strong>Categoria:</strong> {{ object.categoria.nombre }}</li>
+    </ul>
+    <hr />
+
+    <div class="columns">
+      {% for image in object.images.all %}
+      <div class="column is-3">
+        <figure class="image is-square">
+          <a href="{{ image.image.url }}">
+            <img src="{{ image.image.url }}" alt="No hay imagen disponible" />
+          </a>
+        </figure>
+      </div>
+      {% empty %}
+      <div class="column content">
+        <p>Aún no hay imágenes disponibles</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="block">
+      <a
+        href="{% url 'add-to-cart' product_pk=object.pk %}"
+        class="button is-primary"
+      >
+        Añadir al carrito
+      </a>
+      <a href="{% url 'pedido-detail' %}" class="button"> Ver carrito </a>
+      <ul>
+        <li><a href="{% url 'product-list' %}">Ver Lista de Productos</a></li>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,190 @@
+{% extends "base.html" %} {% block content %}
+<div class="row">
+  <div class="col-sm"><h3 class="title">Carrito</h3></div>
+  <div class="col-sm">
+    <button
+      type="button"
+      id="btnmodal"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleModalCenter"
+    >
+      Añadir más productos
+    </button>
+  </div>
+</div>
+
+<div class="block">
+  <h5 class="subtitle">Información General</h5>
+  <div class="content">
+    <ul>
+      <li>
+        <strong>Cliente:</strong>
+        {{object.cliente.user_profile.user.get_username }}
+      </li>
+      <li><strong>Fecha Creación:</strong> {{ object.fecha_creacion }}</li>
+      <li><strong>Estado:</strong> {{ object.estado }}</li>
+    </ul>
+  </div>
+</div>
+
+<div class="block">
+  <h5 class="subtitle">Detalle</h5>
+  <div class="content">
+    {% if total_detalles != 0 %}
+    <ul>
+      {% for detalle in detalles %}
+
+      <div class="row" style="margin: 10px; diplay: inline-flex">
+        <div class="col-3">
+          <img
+            src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}"
+            alt="Imagen no disponible"
+          />
+        </div>
+        <div class="col-4" style="display: flex; align-items: center">
+          {{ detalle.producto.nombre }}
+        </div>
+        <div class="col-4" style="display: flex; align-items: center">
+          <div class="row" style="max-width: 150px">
+            <a
+              href="{% url 'add-to-cart' product_pk=detalle.producto.pk %}"
+              class="button is-success"
+              style="width: auto; text-decoration: none !important"
+            >
+              +
+            </a>
+            <p style="width: auto; margin: auto">{{ detalle.cantidad }}</p>
+            <a
+              href="{% url 'remove-from-cart' product_pk=detalle.producto.pk %}"
+              class="button is-danger"
+              style="width: auto; text-decoration: none !important"
+            >
+              -
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+    </ul>
+    <p style="font-size: 30px">Subtotal: {{ subtotal }}</p>
+    <!--p> Total: {{ total }} </p-->
+    {% endif %} {% if total_detalles == 0 %}
+    <h3>No tienes productos en carrito</h3>
+    {% endif %}
+  </div>
+</div>
+{% if total_detalles != 0 %}
+<a href="{% url 'pedido-update' pk=object.pk %}" class="button is-info">
+  Checkout
+</a>
+{% endif %}
+<hr />
+<div class="content">
+  <ul>
+    <li><a href="{% url 'product-list' %}">Ver Lista de Productos</a></li>
+    <li><a href="{% url 'home' %}">Volver al inicio</a></li>
+  </ul>
+
+  <p></p>
+</div>
+
+<div
+  class="modal fade bd-example-modal-lg"
+  id="exampleModalCenter"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          Ultimos productos
+        </h5>
+        <button
+          type="button"
+          id="btnCloseHeader"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for producto in latest_products %}
+        <div class="row" style="margin: 10px; diplay: inline-flex">
+          <div class="col-3">
+            <img
+              src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}"
+              alt="Imagen no disponible"
+            />
+          </div>
+          <div class="col-3" style="display: flex; align-items: center">
+            <a
+              href="{% url 'product-detail' producto.pk %}"
+              style="
+                text-decoration: none !important;
+                color: #2874a6;
+                font-size: 20px;
+              "
+            >
+              {{ producto.nombre }}
+            </a>
+          </div>
+          <div class="col-2" style="display: flex; align-items: center">
+            <p
+              style="
+                text-decoration: none !important;
+                color: #2874a6;
+                font-size: 20px;
+              "
+            >
+              {{ producto.precio }}
+            </p>
+          </div>
+          <div class="col-2" style="display: flex; align-items: center">
+            <a
+              href="{% url 'add-to-cart' product_pk=producto.pk %}"
+              class="button is-primary"
+              style="text-decoration: none !important; font-size: 20px"
+            >
+              Añadir al carrito
+            </a>
+          </div>
+        </div>
+        {% empty %}
+        <li>Aun no hay productos disponibles.</li>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          id="btnClose"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $("#btnmodal").click(function () {
+    $("#exampleModalCenter").modal("show");
+  });
+  $("#btnClose").click(function () {
+    console.log("band");
+    $("#exampleModalCenter").modal("hide");
+  });
+  $("#btnCloseHeader").click(function () {
+    console.log("band");
+    $("#exampleModalCenter").modal("hide");
+  });
+</script>
+{% endblock %}

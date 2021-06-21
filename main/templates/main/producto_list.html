@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>LinioExp</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      integrity="undefined"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+      integrity="undefined"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/4df7245c80.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css" />
+  </head>
+  <body>
+    <style type="text/css">
+      body {
+        margin: 20px;
+      }
+      a {
+        text-decoration: none !important;
+        color: #2874a6;
+        font-size: 20px;
+      }
+      p {
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    </style>
+    <h1 style="margin: 5px">LinioExp</h1>
+    <hr />
+    <h3>Productos</h3>
+
+    <div class="columns is-multiline">
+      {% for producto in object_list %}
+      <div class="column is-3">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image">
+              <img
+                src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}"
+                alt="Imagen no disponible"
+              />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-8">
+                <h6>
+                  <a href="{% url 'product-detail' producto.pk %}">
+                    {{ producto.nombre }}
+                  </a>
+                </h6>
+              </div>
+              <div class="col-4">
+                <p style="float: right">$ {{ producto.precio }}</p>
+              </div>
+            </div>
+            <p>$ {{ producto.descripcion }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="content">
+        <h6>Aun no hay productos disponibles.</h6>
+      </div>
+      {% endfor %}
+    </div>
+
+    <ul>
+      {% for producto in object_list %}
+      <li>
+        <a href="{% url 'product-detail' producto.pk %}">
+          {{ producto.nombre }}
+        </a>
+        - {{ producto.precio }}
+      </li>
+      {% empty %}
+      <li>Aun no hay productos disponibles.</li>
+      {% endfor %}
+    </ul>
+    <hr />
+    <ul>
+      <li><a href="{% url 'home' %}">Inicio</a></li>
+    </ul>
+  </body>
+</html>

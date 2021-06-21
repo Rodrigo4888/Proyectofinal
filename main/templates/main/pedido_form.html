@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h3 class="title"> Checkout </h3>
+    <div class="block">
+        <h5 class="subtitle"> Completa tus datos </h5>
+        <form method="post" style="display:block;">
+          {% csrf_token %}
+          <div style="display:block;">
+            <select name="ubicacion" required-id="id_ubicacion">
+              {% for localizacion in localizaciones %}
+                <option value= {{localizacion.id}} > {{localizacion.name}}</option>
+              {% endfor %}
+            </select>
+            <input type="text" name="direccion_entrega">
+            <input type="submit" value="Submit" class="button is-info">
+          </div>
+        </form>
+        
+    </div>
+    <hr>
+    <div class="content">
+        <ul>
+          <li><a href="{% url 'product-list' %}">Ver Lista de Productos</a></li>
+          <li><a href="{% url 'home' %}">Inicio</a></li>
+        </ul>
+    </div>
+{% endblock %}

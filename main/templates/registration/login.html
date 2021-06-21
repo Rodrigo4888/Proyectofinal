@@ -1,0 +1,91 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+  <div class="p-4 m-4">
+    <div class="col-lg-4 mt-4 border mb-4 mx-auto rounded pt-4">
+      <div class="text-center col">
+        <img
+          src="https://www.enterese.net/wp-content/uploads/2013/11/linio-logo.jpg"
+          alt=""
+          class=""
+          style="height: 150px"
+        />
+
+        {% if form.errors %}
+        <p>
+          Error. No ha iniciado sesion. Nombre de usuario y contraseña no
+          coinciden. Intente de nuevo.
+        </p>
+        {% endif %}
+        <style type="text/css">
+          .row > div > select {
+            width: 100%;
+          }
+          .row > div > input {
+            width: 100%;
+          }
+          .row > div > a {
+            width: 100%;
+          }
+        </style>
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          <div class="row" style="margin: 4px 0 4px 0">
+            <div class="col-4" style="margin: 4px 0">
+              {{ form.username.label_tag }}
+            </div>
+            <div class="col-6" style="margin: 4px 0">{{ form.username }}</div>
+            <div style="color: red; font-size: 0.5vw">
+              {{ form.username.error_messages }}
+            </div>
+            <div style="color: #2874a6; font-size: 0.75vw">
+              {{ form.username.help_text }}
+            </div>
+          </div>
+          <div class="row" style="margin: 4px 0 4px 0">
+            <div class="col-4" style="margin: 4px 0">
+              {{ form.password.label_tag }}
+            </div>
+            <div class="col-6" style="margin: 4px 0">{{ form.password }}</div>
+            <div style="color: red; font-size: 0.5vw">
+              {{ form.password.error_messages }}
+            </div>
+            <div style="color: #2874a6; font-size: 0.75vw">
+              {{ form.password.help_text }}
+            </div>
+          </div>
+          <!--table>
+    <tr>
+      <td>{{ form.username.label_tag }}</td>
+      <td>{{ form.username }}</td>
+    </tr>
+    <tr>
+      <td>{{ form.password.label_tag }}</td>
+      <td>{{ form.password }}</td>
+    </tr>
+  </table-->
+
+          <div class="row" style="margin: 4px 0 4px 0">
+            <input
+              type="submit"
+              style="margin: auto; width: 70%"
+              class="btn btn-primary"
+              value="LOGIN"
+            />
+          </div>
+          <input type="hidden" name="next" value="{% url 'home'%}" />
+        </form>
+
+        {# Assumes you setup the password_reset view in your URLconf #}
+        <p>
+          <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+        </p>
+        <p>
+          <a href="{% url 'register' %}">¿No tienes cuenta? Registrate aqui</a>
+        </p>
+        <p><a href="{% url 'home' %}">Volver al inicio</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
